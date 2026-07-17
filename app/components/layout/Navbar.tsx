@@ -62,14 +62,14 @@ export function Navbar() {
             ))}
             <div className="mt-2 flex flex-col gap-2">
               <ButtonLink
-                href="#contact"
+                href="/login"
                 variant="ghost"
                 className="justify-center"
               >
                 Login
               </ButtonLink>
               <ButtonLink
-                href="#cases"
+                href="/register"
                 variant="primary"
                 className="justify-center"
               >

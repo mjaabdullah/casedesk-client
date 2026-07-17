@@ -1,8 +1,8 @@
 export const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Cases", href: "#cases" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "Cases", href: "/cases" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const footerColumns = [
