@@ -28,10 +28,10 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <ButtonLink href="#contact" variant="ghost">
+          <ButtonLink href="/login" variant="ghost">
             Login
           </ButtonLink>
-          <ButtonLink href="#cases" variant="primary">
+          <ButtonLink href="/register" variant="primary">
             Get Started
           </ButtonLink>
         </div>
