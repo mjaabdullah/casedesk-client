@@ -3,12 +3,18 @@
 import { ButtonLink } from "@/app/components/common/ButtonLink";
 import { Logo } from "@/app/components/common/Logo";
 import { navLinks } from "@/app/content/casedesk";
+import { getSessionUserFromClient } from "@/app/lib/getSessionFromClient";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const user = getSessionUserFromClient();
+
+  const isLoggedIn = !!user;
+  console.log(user);
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">

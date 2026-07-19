@@ -5,6 +5,8 @@ import { AuthHeader } from "@/app/components/auth/AuthHeader";
 import { GoogleLoginButton } from "@/app/components/auth/GoogleLoginButton";
 import { AppButton } from "@/app/components/form/AppButton";
 import { AppInput } from "@/app/components/form/AppInput";
+import { authClient } from "@/app/lib/auth-client";
+import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -28,8 +30,17 @@ export function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
 
-  const handleLogin = (data: LoginFormValues) => {
-    console.log(data);
+  const handleLogin = async (userData: LoginFormValues) => {
+    console.log(userData);
+    const { data, error } = await authClient.signIn.email(userData);
+
+    if (data?.user) {
+      toast.success("Login Successful!");
+    }
+
+    if (error) {
+      toast.warning(error.message);
+    }
   };
 
   const handleGoogleLogin = () => {

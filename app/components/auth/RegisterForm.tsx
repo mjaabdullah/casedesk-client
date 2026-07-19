@@ -7,6 +7,8 @@ import { AppButton } from "@/app/components/form/AppButton";
 import { AppDateInput } from "@/app/components/form/AppDateInput";
 import { AppInput } from "@/app/components/form/AppInput";
 import { AppSelect } from "@/app/components/form/AppSelect";
+import { authClient } from "@/app/lib/auth-client";
+import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -146,8 +148,21 @@ export function RegisterForm() {
     [],
   );
 
-  const handleRegister = (data: RegisterFormValues) => {
-    console.log(data);
+  const handleRegister = async (userData: RegisterFormValues) => {
+    const { fullName, ...rest } = userData;
+
+    const { data, error } = await authClient.signUp.email({
+      ...rest,
+      name: fullName,
+    });
+
+    if (data?.user) {
+      toast.success("Account Created Successfully!");
+    }
+
+    if (error) {
+      toast.warning(error.message);
+    }
   };
 
   const handleGoogleLogin = () => {
