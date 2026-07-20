@@ -1,9 +1,11 @@
 "use client";
 
-import { buttonVariants, Drawer, Separator } from "@heroui/react";
+import { buttonVariants, Drawer, Separator, toast } from "@heroui/react";
 import { LogOut } from "lucide-react";
 import NextLink from "next/link";
 
+import { authClient } from "@/app/lib/auth-client";
+import { useRouter } from "next/navigation";
 import { Logo } from "../../common/Logo";
 import {
   authenticatedNavLinks,
@@ -27,8 +29,17 @@ export function MobileDrawer({
   user,
   onNavigate,
 }: MobileDrawerProps) {
-  const handleLogout = () => {
-    console.log("logout");
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { data, error } = await authClient.signOut();
+    if (data?.success) {
+      router.push("/login");
+    }
+    if (error) {
+      toast.warning(error.message);
+    }
+
     onNavigate();
   };
 

@@ -13,10 +13,10 @@ export default function NotFound() {
         <p className="mt-6 text-sm font-semibold uppercase tracking-[0.3em] text-[#D4A017]">
           Error 404
         </p>
-        <h1 className="mt-3 text-5xl font-semibold tracking-tight text-slate-900 sm:text-6xl">
+        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-6xl">
           Page Not Found
         </h1>
-        <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600">
+        <p className="mx-auto mt-5 max-w-xl text-sm sm:text-lg sm:leading-8 text-slate-600">
           The page you are looking for is unavailable or may have moved. Return
           to the dashboard to continue managing your cases.
         </p>

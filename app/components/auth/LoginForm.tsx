@@ -9,6 +9,7 @@ import { authClient } from "@/app/lib/auth-client";
 import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AppPasswordInput } from "../form/AppPasswordInput";
@@ -29,13 +30,14 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
+  const router = useRouter();
 
   const handleLogin = async (userData: LoginFormValues) => {
-    console.log(userData);
     const { data, error } = await authClient.signIn.email(userData);
 
     if (data?.user) {
       toast.success("Login Successful!");
+      router.push("/");
     }
 
     if (error) {

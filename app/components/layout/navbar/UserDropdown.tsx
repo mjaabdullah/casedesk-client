@@ -1,9 +1,18 @@
 "use client";
 
-import { Avatar, Button, Dropdown, Label, Separator } from "@heroui/react";
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Label,
+  Separator,
+  toast,
+} from "@heroui/react";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
 
+import { authClient } from "@/app/lib/auth-client";
+import { useRouter } from "next/navigation";
 import { userDropdownLinks } from "./navigation.config";
 import type { CaseDeskUser } from "./types";
 import { getInitials } from "./utils";
@@ -15,6 +24,17 @@ interface UserDropdownProps {
 export function UserDropdown({ user }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const displayName = user?.name ?? "Account";
+const router = useRouter();
+
+const handleLogout = async () => {
+  const { data, error } = await authClient.signOut();
+  if (data?.success) {
+    router.push("/login");
+  }
+  if (error) {
+    toast.warning(error.message);
+  }
+};
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
@@ -44,8 +64,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
           aria-label="Account"
           onAction={(key) => {
             if (key === "logout") {
-              // Logout logic
-              console.log("logout");
+              handleLogout();
             }
           }}
         >
