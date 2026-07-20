@@ -1,45 +1,86 @@
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-} from "@heroui/react";
-import { LogOut, UserCircle } from "lucide-react";
-import { UserAvatar } from "./UserAvatar";
+"use client";
 
-type User = {
-  name: string;
-  email: string;
-  image?: string | null;
-};
+import { Avatar, Button, Dropdown, Label, Separator } from "@heroui/react";
+import { LogOut } from "lucide-react";
+import { useState } from "react";
 
-export function UserDropdown({ user }: { user: User }) {
+import { userDropdownLinks } from "./navigation.config";
+import type { CaseDeskUser } from "./types";
+import { getInitials } from "./utils";
+
+interface UserDropdownProps {
+  user?: CaseDeskUser;
+}
+
+export function UserDropdown({ user }: UserDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const displayName = user?.name ?? "Account";
+
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <button
-          type="button"
-          className="rounded-full p-1 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A017]/40 focus-visible:ring-offset-2"
+    <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
+      <Dropdown.Trigger>
+        <Button
+          isIconOnly
+          variant="ghost"
+          aria-label={`Open ${displayName} menu`}
+          className="h-9 w-9 rounded-full p-0.5"
         >
-          <UserAvatar user={user} />
-        </button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="User menu">
-        <DropdownSection>
-          <DropdownItem key="profile" href="/profile" textValue="My Profile">
-            My Profile
-          </DropdownItem>
-        </DropdownSection>
-        <DropdownItem
-          key="logout"
-          className="text-rose-600"
-          onAction={() => console.log("logout")}
-          textValue="Logout"
+          <Avatar size="sm">
+            {user?.avatarUrl ? (
+              <Avatar.Image src={user.avatarUrl} alt={displayName} />
+            ) : null}
+            <Avatar.Fallback className="bg-[#23272F] font-medium text-white">
+              {getInitials(displayName)}
+            </Avatar.Fallback>
+          </Avatar>
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Popover
+        placement="bottom end"
+        className="min-w-[220px] rounded-lg border border-[#E5E7EB] bg-white p-1.5 shadow-lg shadow-black/5"
+      >
+        <Dropdown.Menu
+          aria-label="Account"
+          onAction={(key) => {
+            if (key === "logout") {
+              // Logout logic
+              console.log("logout");
+            }
+          }}
         >
-          Logout
-        </DropdownItem>
-      </DropdownMenu>
+          {userDropdownLinks.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Dropdown.Item
+                key={item.href}
+                id={item.href}
+                href={item.href}
+                textValue={item.label}
+                className="flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm text-[#23272F] outline-none transition-colors duration-150 data-[hovered=true]:bg-[#F8F9FB] data-[focus-visible=true]:bg-[#F8F9FB]"
+              >
+                <Icon
+                  className="h-4 w-4 text-[#23272F]/60"
+                  aria-hidden="true"
+                />
+                <Label>{item.label}</Label>
+              </Dropdown.Item>
+            );
+          })}
+
+          <Separator className="my-1 bg-[#E5E7EB]" />
+
+          <Dropdown.Item
+            id="logout"
+            textValue="Logout"
+            variant="danger"
+            className="flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm outline-none transition-colors duration-150"
+          >
+            <LogOut className="h-4 w-4" aria-hidden="true" />
+            <Label>Logout</Label>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown.Popover>
     </Dropdown>
   );
 }

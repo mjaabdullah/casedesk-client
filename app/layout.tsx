@@ -2,8 +2,10 @@ import { Toast } from "@heroui/react";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Footer } from "./components/layout/Footer";
+import { CaseDeskUser } from "./components/layout/navbar";
 import { Navbar } from "./components/layout/navbar/Navbar";
 import "./globals.css";
+import { getSessionUserFromServer } from "./lib/getSessionFromServer";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -23,11 +25,15 @@ export const metadata: Metadata = {
     "Modern legal case management for law firms, assistants, and clients.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userData = await getSessionUserFromServer();
+  const user: CaseDeskUser | undefined = userData?.user;
+  const isAuthenticated: boolean = !!user;
+
   return (
     <html
       lang="en"
@@ -35,7 +41,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-[#F8F9FB] text-slate-900 ">
         <Toast.Provider />
-        <Navbar />
+        <Navbar isAuthenticated={isAuthenticated} user={user} />
         {children}
         <Footer />
       </body>
