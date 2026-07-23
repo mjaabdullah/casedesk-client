@@ -35,6 +35,7 @@ export function MobileDrawer({
     const { data, error } = await authClient.signOut();
     if (data?.success) {
       router.push("/login");
+      router.refresh();
     }
     if (error) {
       toast.warning(error.message);

@@ -16,7 +16,11 @@ export const publicNavLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const authenticatedNavLinks: NavLink[] = [{ label: "Home", href: "/" }];
+export const authenticatedNavLinks: NavLink[] = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
 export const casesDropdownLinks: NavLinkWithIcon[] = [
   { label: "Explore Cases", href: "/cases", icon: FolderSearch },
