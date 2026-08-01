@@ -38,7 +38,7 @@ export function LoginForm() {
     if (data?.user) {
       toast.success("Login Successful!");
       router.push("/");
-      router.refresh();
+      router.refresh(); 
     }
 
     if (error) {

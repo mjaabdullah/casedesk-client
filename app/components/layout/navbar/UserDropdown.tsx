@@ -24,38 +24,36 @@ interface UserDropdownProps {
 export function UserDropdown({ user }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const displayName = user?.name ?? "Account";
-const router = useRouter();
+  const router = useRouter();
 
-const handleLogout = async () => {
-  const { data, error } = await authClient.signOut();
-  if (data?.success) {
-    router.push("/login");
-    router.refresh();
-  }
-  if (error) {
-    toast.warning(error.message);
-  }
-};
+  const handleLogout = async () => {
+    const { data, error } = await authClient.signOut();
+    if (data?.success) {
+      router.push("/login");
+      router.refresh();
+    }
+    if (error) {
+      toast.warning(error.message);
+    }
+  };
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
-      <Dropdown.Trigger>
-        <Button
-          isIconOnly
-          variant="ghost"
-          aria-label={`Open ${displayName} menu`}
-          className="h-9 w-9 rounded-full p-0.5"
-        >
-          <Avatar size="sm">
-            {user?.avatarUrl ? (
-              <Avatar.Image src={user.avatarUrl} alt={displayName} />
-            ) : null}
-            <Avatar.Fallback className="bg-[#23272F] font-medium text-white">
-              {getInitials(displayName)}
-            </Avatar.Fallback>
-          </Avatar>
-        </Button>
-      </Dropdown.Trigger>
+      <Button
+        isIconOnly
+        variant="ghost"
+        aria-label={`Open ${displayName} menu`}
+        className="h-9 w-9 rounded-full p-0.5"
+      >
+        <Avatar size="sm">
+          {user?.avatarUrl ? (
+            <Avatar.Image src={user.avatarUrl} alt={displayName} />
+          ) : null}
+          <Avatar.Fallback className="bg-[#23272F] font-medium text-white">
+            {getInitials(displayName)}
+          </Avatar.Fallback>
+        </Avatar>
+      </Button>
 
       <Dropdown.Popover
         placement="bottom end"

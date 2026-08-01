@@ -6,6 +6,7 @@ import { CaseDeskUser } from "./components/layout/navbar";
 import { Navbar } from "./components/layout/navbar/Navbar";
 import "./globals.css";
 import { getSessionUserFromServer } from "./lib/getSessionFromServer";
+import { Providers } from "./providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -40,10 +41,12 @@ export default async function RootLayout({
       className={`${poppins.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#F8F9FB] text-slate-900 ">
-        <Toast.Provider />
-        <Navbar isAuthenticated={isAuthenticated} user={user} />
-        {children}
-        <Footer />
+        <Providers>
+          <Toast.Provider />
+          <Navbar isAuthenticated={isAuthenticated} user={user} />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

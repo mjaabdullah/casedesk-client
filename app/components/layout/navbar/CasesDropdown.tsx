@@ -12,22 +12,20 @@ export function CasesDropdown() {
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
-      <Dropdown.Trigger>
-        <Button
-          variant="ghost"
-          aria-label="Cases menu"
-          className="gap-1.5 px-3 text-sm font-medium text-[#23272F]/70 data-[hovered=true]:text-[#23272F]"
-        >
-          Cases
-          <ChevronDown
-            aria-hidden="true"
-            className={cx(
-              "h-4 w-4 text-[#23272F]/50 transition-transform duration-150",
-              isOpen && "rotate-180 text-[#D4A017]",
-            )}
-          />
-        </Button>
-      </Dropdown.Trigger>
+      <Button
+        variant="ghost"
+        aria-label="Cases menu"
+        className="gap-1.5 px-3 text-sm font-medium text-[#23272F]/70 data-[hovered=true]:text-[#23272F]"
+      >
+        Cases
+        <ChevronDown
+          aria-hidden="true"
+          className={cx(
+            "h-4 w-4 text-[#23272F]/50 transition-transform duration-150",
+            isOpen && "rotate-180 text-[#D4A017]",
+          )}
+        />
+      </Button>
 
       <Dropdown.Popover
         placement="bottom start"
