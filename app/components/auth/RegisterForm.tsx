@@ -11,6 +11,7 @@ import { authClient } from "@/app/lib/auth-client";
 import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -137,6 +138,8 @@ export function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema) });
 
+  const router = useRouter();
+
   const userType = watch("userType");
 
   const userTypeOptions = useMemo(
@@ -158,6 +161,8 @@ export function RegisterForm() {
 
     if (data?.user) {
       toast.success("Account Created Successfully!");
+      router.push("/login");
+      router.refresh();
     }
 
     if (error) {
