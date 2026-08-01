@@ -1,4 +1,4 @@
-import { calendarItems, heroStats, recentCases } from "@/app/content/casedesk";
+import { calendarItems, heroStats, recentCases } from "@/content/casedesk";
 import { BriefcaseBusiness, CalendarDays } from "lucide-react";
 
 export function HeroDashboardPreview() {

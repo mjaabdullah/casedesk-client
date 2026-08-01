@@ -1,13 +1,13 @@
 "use client";
 
-import { AuthCard } from "@/app/components/auth/AuthCard";
-import { AuthHeader } from "@/app/components/auth/AuthHeader";
-import { GoogleLoginButton } from "@/app/components/auth/GoogleLoginButton";
-import { AppButton } from "@/app/components/form/AppButton";
-import { AppDateInput } from "@/app/components/form/AppDateInput";
-import { AppInput } from "@/app/components/form/AppInput";
-import { AppSelect } from "@/app/components/form/AppSelect";
-import { authClient } from "@/app/lib/auth-client";
+import { AuthCard } from "@/components/auth/AuthCard";
+import { AuthHeader } from "@/components/auth/AuthHeader";
+import { GoogleLoginButton } from "@/components/auth/GoogleLoginButton";
+import { AppButton } from "@/components/form/AppButton";
+import { AppDateInput } from "@/components/form/AppDateInput";
+import { AppInput } from "@/components/form/AppInput";
+import { AppSelect } from "@/components/form/AppSelect";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";

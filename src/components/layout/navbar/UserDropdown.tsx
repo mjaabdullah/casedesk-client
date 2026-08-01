@@ -11,7 +11,7 @@ import {
 import { LogOut } from "lucide-react";
 import { useState } from "react";
 
-import { authClient } from "@/app/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { userDropdownLinks } from "./navigation.config";
 import type { CaseDeskUser } from "./types";

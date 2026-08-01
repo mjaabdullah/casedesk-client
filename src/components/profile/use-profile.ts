@@ -2,7 +2,7 @@
 
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
-import { getSessionUserFromClient } from "../lib/getSessionFromClient";
+import { getSessionUserFromClient } from "@/lib/getSessionFromClient";
 import type { UserProfile, UserType } from "./profile";
 
 const PROFILE_QUERY_KEY = ["profile", "me"] as const;
@@ -14,7 +14,10 @@ function normalizeUserType(value: string | null | undefined): UserType {
     return "lawyer";
   }
 
-  if (normalizedValue === "assistant" || normalizedValue === "lawyerassistant") {
+  if (
+    normalizedValue === "assistant" ||
+    normalizedValue === "lawyerassistant"
+  ) {
     return "assistant";
   }
 
@@ -66,9 +69,13 @@ function normalizeProfile(
         ? sessionUser.advocateClerkIdNo
         : null,
     advocateId:
-      typeof sessionUser.advocateId === "string" ? sessionUser.advocateId : null,
+      typeof sessionUser.advocateId === "string"
+        ? sessionUser.advocateId
+        : null,
     startedDate:
-      typeof sessionUser.startedDate === "string" ? sessionUser.startedDate : null,
+      typeof sessionUser.startedDate === "string"
+        ? sessionUser.startedDate
+        : null,
     passwordLastChangedAt:
       typeof sessionUser.passwordLastChangedAt === "string"
         ? sessionUser.passwordLastChangedAt

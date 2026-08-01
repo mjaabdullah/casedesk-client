@@ -1,7 +1,7 @@
-import { HeroContent } from "./components/hero/HeroContent";
-import { AboutSection } from "./components/sections/AboutSection";
-import { ContactSection } from "./components/sections/ContactSection";
-import { FeatureSection } from "./components/sections/FeatureSection";
+import { HeroContent } from "@/components/hero/HeroContent";
+import { AboutSection } from "@/components/sections/AboutSection";
+import { ContactSection } from "@/components/sections/ContactSection";
+import { FeatureSection } from "@/components/sections/FeatureSection";
 
 export default function Home() {
   return (

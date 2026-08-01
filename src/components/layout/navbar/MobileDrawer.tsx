@@ -4,7 +4,7 @@ import { buttonVariants, Drawer, Separator, toast } from "@heroui/react";
 import { LogOut } from "lucide-react";
 import NextLink from "next/link";
 
-import { authClient } from "@/app/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Logo } from "../../common/Logo";
 import {

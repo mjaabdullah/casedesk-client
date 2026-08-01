@@ -1,4 +1,4 @@
-import { highlights } from "@/app/content/casedesk";
+import { highlights } from "@/content/casedesk";
 import { CheckCircle2, Gavel } from "lucide-react";
 
 export function AboutSection() {

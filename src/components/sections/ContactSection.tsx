@@ -1,4 +1,4 @@
-import { ButtonLink } from "@/app/components/common/ButtonLink";
+import { ButtonLink } from "@/components/common/ButtonLink";
 import { ArrowRight } from "lucide-react";
 
 export function ContactSection() {

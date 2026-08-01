@@ -1,12 +1,12 @@
+import { Footer } from "@/components/layout/Footer";
+import { CaseDeskUser } from "@/components/layout/navbar";
+import { Navbar } from "@/components/layout/navbar/Navbar";
+import { getSessionUserFromServer } from "@/lib/getSessionFromServer";
+import { Providers } from "@/providers/Providers";
 import { Toast } from "@heroui/react";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
-import { Footer } from "./components/layout/Footer";
-import { CaseDeskUser } from "./components/layout/navbar";
-import { Navbar } from "./components/layout/navbar/Navbar";
 import "./globals.css";
-import { getSessionUserFromServer } from "./lib/getSessionFromServer";
-import { Providers } from "./providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",

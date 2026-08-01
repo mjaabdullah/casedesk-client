@@ -1,11 +1,11 @@
 "use client";
 
-import { AuthCard } from "@/app/components/auth/AuthCard";
-import { AuthHeader } from "@/app/components/auth/AuthHeader";
-import { GoogleLoginButton } from "@/app/components/auth/GoogleLoginButton";
-import { AppButton } from "@/app/components/form/AppButton";
-import { AppInput } from "@/app/components/form/AppInput";
-import { authClient } from "@/app/lib/auth-client";
+import { AuthCard } from "@/components/auth/AuthCard";
+import { AuthHeader } from "@/components/auth/AuthHeader";
+import { GoogleLoginButton } from "@/components/auth/GoogleLoginButton";
+import { AppButton } from "@/components/form/AppButton";
+import { AppInput } from "@/components/form/AppInput";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export function LoginForm() {
     if (data?.user) {
       toast.success("Login Successful!");
       router.push("/");
-      router.refresh(); 
+      router.refresh();
     }
 
     if (error) {

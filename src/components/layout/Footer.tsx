@@ -1,4 +1,4 @@
-import { footerColumns } from "@/app/content/casedesk";
+import { footerColumns } from "@/content/casedesk";
 import { BookOpen, FileText, Scale, Sparkles } from "lucide-react";
 import Link from "next/link";
 

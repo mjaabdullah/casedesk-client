@@ -1,5 +1,5 @@
-import { SectionTitle } from "@/app/components/common/SectionTitle";
-import { featureCards } from "@/app/content/casedesk";
+import { SectionTitle } from "@/components/common/SectionTitle";
+import { featureCards } from "@/content/casedesk";
 import { FeatureCard } from "../common/FeatureCard";
 
 export function FeatureSection() {

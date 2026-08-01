@@ -1,5 +1,5 @@
-import { ButtonLink } from "@/app/components/common/ButtonLink";
-import { trustPoints } from "@/app/content/casedesk";
+import { ButtonLink } from "@/components/common/ButtonLink";
+import { trustPoints } from "@/content/casedesk";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { HeroDashboardPreview } from "./HeroDashboardPreview";
 

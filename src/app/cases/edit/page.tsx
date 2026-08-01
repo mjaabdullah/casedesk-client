@@ -1,5 +1,5 @@
-import { CaseForm } from "../../components/case-form/CaseForm";
-import { Container } from "../../components/common/Container";
+import { CaseForm } from "@/components/case-form/CaseForm";
+import { Container } from "@/components/common/Container";
 
 const mockCase: {
   caseTitle: string;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ProfilePage } from "./profile-page";
+import { ProfilePage } from "@/components/profile/profile-page";
 
 export const metadata: Metadata = {
   title: "Profile | CaseDesk",
