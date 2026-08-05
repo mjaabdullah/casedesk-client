@@ -16,7 +16,14 @@ export function DesktopNavbar({ isAuthenticated, user }: DesktopNavbarProps) {
   return (
     <div className="hidden flex-1 items-center justify-between md:flex">
       <div className="flex flex-1 justify-center">
-        {isAuthenticated ? <AuthenticatedNavigation /> : <PublicNavigation />}
+        {isAuthenticated ? (
+          <AuthenticatedNavigation
+            isAuthenticated={isAuthenticated}
+            user={user}
+          />
+        ) : (
+          <PublicNavigation />
+        )}
       </div>
 
       <div className="flex items-center gap-2 pl-4">

@@ -62,30 +62,45 @@ export function MobileDrawer({
           <Drawer.Body className="flex flex-col gap-1 overflow-y-auto px-3 py-4">
             {isAuthenticated ? (
               <>
-                {authenticatedNavLinks.map((link) => (
-                  <NavItem
-                    key={link.href}
-                    href={link.href}
-                    label={link.label}
-                    variant="mobile"
-                    onNavigate={onNavigate}
-                  />
-                ))}
+                {user?.userType !== "general" ? (
+                  <>
+                    {authenticatedNavLinks.map((link) => (
+                      <NavItem
+                        key={link.href}
+                        href={link.href}
+                        label={link.label}
+                        variant="mobile"
+                        onNavigate={onNavigate}
+                      />
+                    ))}
 
-                <p className="mt-3 px-3 text-xs font-semibold uppercase tracking-wide text-[#23272F]/50">
-                  Cases
-                </p>
-                {casesDropdownLinks.map((item) => (
-                  <NavItem
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    icon={item.icon}
-                    variant="mobile"
-                    onNavigate={onNavigate}
-                  />
-                ))}
-
+                    <p className="mt-3 px-3 text-xs font-semibold uppercase tracking-wide text-[#23272F]/50">
+                      Cases
+                    </p>
+                    {casesDropdownLinks.map((item) => (
+                      <NavItem
+                        key={item.href}
+                        href={item.href}
+                        label={item.label}
+                        icon={item.icon}
+                        variant="mobile"
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {publicNavLinks.map((link) => (
+                      <NavItem
+                        key={link.href}
+                        href={link.href}
+                        label={link.label}
+                        variant="mobile"
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </>
+                )}
                 <Separator className="my-3 bg-[#E5E7EB]" />
 
                 {userDropdownLinks.map((item) => (

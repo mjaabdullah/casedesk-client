@@ -33,7 +33,7 @@ export const userDropdownLinks: NavLinkWithIcon[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "AI Assistant", href: "/ai-assistant", icon: Sparkles },
 ];
-
+ 
 export const authLinks = {
   login: "/login",
   register: "/register",

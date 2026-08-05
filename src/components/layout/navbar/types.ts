@@ -6,6 +6,7 @@ export interface CaseDeskUser {
   name: string;
   email?: string;
   avatarUrl?: string;
+  userType?: string;
 }
 
 export interface NavLink {

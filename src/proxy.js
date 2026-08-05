@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { auth } from "./src/lib/auth";
+import { auth } from "./lib/auth";
 
 export async function proxy(request) {
   const session = await auth.api.getSession({
@@ -27,7 +27,7 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (pathname.startsWith("/cases/") && session.user.userRole !== "lawyer") {
+  if (pathname.startsWith("/cases/") && session?.user?.userType === "general") {
     return NextResponse.redirect(new URL(`/cases`, request.url));
   }
 

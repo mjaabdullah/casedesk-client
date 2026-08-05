@@ -5,10 +5,23 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 import { casesDropdownLinks } from "./navigation.config";
+import { CaseDeskUser } from "./types";
 import { cx } from "./utils";
+interface DesktopNavbarProps {
+  isAuthenticated: boolean;
+  user?: CaseDeskUser;
+}
 
-export function CasesDropdown() {
+export function CasesDropdown({ isAuthenticated, user }: DesktopNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  if (isAuthenticated) {
+    console.log("User is authenticated:", user);
+  }
 
   return (
     <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
