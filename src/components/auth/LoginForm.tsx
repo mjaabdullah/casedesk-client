@@ -46,8 +46,10 @@ export function LoginForm() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    console.log("Google Login Clicked");
+  const handleGoogleLogin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
