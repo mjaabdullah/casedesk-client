@@ -10,8 +10,8 @@ export type UserProfile = {
   userType: UserType;
   authProvider?: string | null;
   emailVerified?: boolean | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  createdAt?: object | null;
+  updatedAt?: object | null;
   barCouncilIdNo?: string | null;
   enrollmentDate?: string | null;
   advocateClerkIdNo?: string | null;

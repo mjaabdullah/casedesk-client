@@ -46,8 +46,8 @@ export function UserDropdown({ user }: UserDropdownProps) {
         className="h-9 w-9 rounded-full p-0.5"
       >
         <Avatar size="sm">
-          {user?.avatarUrl ? (
-            <Avatar.Image src={user.avatarUrl} alt={displayName} />
+          {user?.image ? (
+            <Avatar.Image src={user.image} alt={displayName} />
           ) : null}
           <Avatar.Fallback className="bg-[#23272F] font-medium text-white">
             {getInitials(displayName)}

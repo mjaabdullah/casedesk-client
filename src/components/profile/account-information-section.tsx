@@ -22,8 +22,8 @@ export function AccountInformationSection({
   profile,
 }: AccountInformationSectionProps) {
   const authProvider = profile.authProvider?.trim();
-  const memberSince = formatDate(profile.createdAt);
-  const lastUpdated = formatDate(profile.updatedAt);
+  const memberSince = formatDate(profile?.createdAt);
+  const lastUpdated = formatDate(profile?.updatedAt);
 
   return (
     <Card aria-labelledby="account-info-heading">

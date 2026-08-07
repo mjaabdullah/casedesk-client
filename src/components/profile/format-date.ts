@@ -1,13 +1,11 @@
-/**
- * Formats an ISO 8601 date string into a human-readable, locale-aware date
- * without exposing empty placeholders when the source data is missing.
- */
-export function formatDate(isoDate: string | null | undefined): string {
-  if (!isoDate || typeof isoDate !== "string") {
+export function formatDate(
+  input: object | string | Date | null | undefined,
+): string {
+  if (!input) {
     return "";
   }
 
-  const date = new Date(isoDate);
+  const date = input instanceof Date ? input : new Date(input.toString());
 
   if (Number.isNaN(date.getTime())) {
     return "";

@@ -53,9 +53,9 @@ function normalizeProfile(
         ? sessionUser.emailVerified
         : null,
     createdAt:
-      typeof sessionUser.createdAt === "string" ? sessionUser.createdAt : null,
+      typeof sessionUser.createdAt === "object" ? sessionUser.createdAt : null,
     updatedAt:
-      typeof sessionUser.updatedAt === "string" ? sessionUser.updatedAt : null,
+      typeof sessionUser.updatedAt === "object" ? sessionUser.updatedAt : null,
     barCouncilIdNo:
       typeof sessionUser.barCouncilIdNo === "string"
         ? sessionUser.barCouncilIdNo
@@ -89,6 +89,7 @@ function normalizeProfile(
 
 async function fetchProfile(): Promise<UserProfile | null> {
   const sessionUser = await getSessionUserFromClient();
+    
   return normalizeProfile(sessionUser);
 }
 

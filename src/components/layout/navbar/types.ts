@@ -5,7 +5,7 @@ export type IconComponent = ComponentType<{ className?: string }>;
 export interface CaseDeskUser {
   name: string;
   email?: string;
-  avatarUrl?: string;
+  image?: string;
   userType?: string;
 }
 
