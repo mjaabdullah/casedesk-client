@@ -6,7 +6,7 @@ export type UserProfile = {
   email: string;
   phone?: string | null;
   dateOfBirth?: string | null;
-  image?: string | null;
+  image?: string | null | undefined;
   userType: UserType;
   authProvider?: string | null;
   emailVerified?: boolean | null;
