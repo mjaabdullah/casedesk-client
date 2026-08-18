@@ -20,7 +20,7 @@ export function CasesDropdown({ isAuthenticated, user }: DesktopNavbarProps) {
   }
 
   if (isAuthenticated) {
-    console.log("User is authenticated:", user);
+    // console.log("User is authenticated:", user);
   }
 
   return (
