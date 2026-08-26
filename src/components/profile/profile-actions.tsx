@@ -7,11 +7,7 @@ interface ProfileActionsProps {
   className?: string;
 }
 
-/**
- * Primary profile actions. UI only, per spec: handlers just log to the
- * console. Wire these up to real edit-profile / change-password flows
- * once that functionality is implemented.
- */
+
 export function ProfileActions({ className }: ProfileActionsProps) {
   return (
     <div className={`flex flex-col gap-2 sm:flex-row ${className ?? ""}`}>

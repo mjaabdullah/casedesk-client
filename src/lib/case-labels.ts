@@ -49,15 +49,6 @@ export function compareHearingDates(value: string | null | undefined): number {
 
   if (!dateB || !dateA) return 0;
 
-  console.log(
-    "dateA",
-    dateA,
-    ", dateB",
-    dateB,
-    ", diff:",
-    dateA.getTime() - dateB.getTime(),
-  );
-
   return dateA.getTime() - dateB.getTime();
 }
 

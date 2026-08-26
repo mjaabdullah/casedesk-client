@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { emailOTP } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
+import { sendOtpEmail } from "./email/verify";
 
 const client = new MongoClient(process.env.MONGO_URI as string);
 const db = client.db("CaseDesk");
@@ -13,6 +15,17 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === "email-verification") {
+          await sendOtpEmail({ email, otp });
+        }
+      },
+    }),
+  ],
+
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,

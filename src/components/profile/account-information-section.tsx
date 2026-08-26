@@ -7,6 +7,7 @@ import {
   MailX,
 } from "lucide-react";
 
+import { EmailVerificationModal } from "./EmailVerificationModal";
 import { formatDate } from "./format-date";
 import { InfoRow } from "./info-row";
 import type { UserProfile } from "./profile";
@@ -14,13 +15,14 @@ import type { UserProfile } from "./profile";
 interface AccountInformationSectionProps {
   profile: Pick<
     UserProfile,
-    "authProvider" | "emailVerified" | "createdAt" | "updatedAt"
+    "authProvider" | "emailVerified" | "createdAt" | "updatedAt" | "email"
   >;
 }
 
 export function AccountInformationSection({
   profile,
 }: AccountInformationSectionProps) {
+   
   const authProvider = profile.authProvider?.trim();
   const memberSince = formatDate(profile?.createdAt);
   const lastUpdated = formatDate(profile?.updatedAt);
@@ -54,17 +56,27 @@ export function AccountInformationSection({
                 <MailX className="size-4" />
               )}
             </span>
+
             <div className="flex flex-col gap-1">
               <span className="text-xs font-medium uppercase tracking-wide text-foreground/50">
                 Email Verification
               </span>
-              <Chip
-                color={profile.emailVerified ? "success" : "warning"}
-                variant="tertiary"
-                size="sm"
-              >
-                {profile.emailVerified ? "Verified" : "Unverified"}
-              </Chip>
+              <div className="flex items-center gap-2">
+                <Chip
+                  color={profile.emailVerified ? "success" : "warning"}
+                  variant="tertiary"
+                  size="sm"
+                >
+                  {profile.emailVerified ? "Verified" : "Unverified"}
+                </Chip>
+
+                {!profile.emailVerified && (
+                  <EmailVerificationModal
+                    email={profile.email}
+                    onVerified={() => {}}
+                  />
+                )}
+              </div>
             </div>
           </div>
         ) : null}

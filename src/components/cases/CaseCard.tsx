@@ -108,13 +108,19 @@ export function CaseCard({ caseItem }: CaseCardProps) {
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               {defendantLabel}
             </p>
-            <p className="line-clamp-2 break-words text-sm font-medium text-foreground">
+            <p className="line-clamp-2 wrap-break-word text-sm font-medium text-foreground">
               {defendant}
             </p>
           </div>
 
-          <div className="col-span-2 space-y-0.5">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+          <div className={`col-span-2 space-y-0.5 `}>
+            <p
+              className={`text-[11px] font-semibold uppercase tracking-wider ${
+                compareHearingDates(nextHearingDate) > 0
+                  ? "text-red-400"
+                  : "text-muted"
+              } `}
+            >
               {compareHearingDates(nextHearingDate) > 0
                 ? "পূর্বের তারিখ"
                 : "পরবর্তী তারিখ"}
