@@ -39,10 +39,11 @@ export function BasicInformationSection({
           placeholder="Select a case type"
           required
           options={[
-            { label: "Civil", value: "civil" },
-            { label: "Criminal", value: "criminal" },
-            { label: "Family", value: "family" },
-            { label: "Corporate", value: "corporate" },
+            { label: "দেওয়ানি", value: "দেওয়ানি" },
+            { label: "ফৌজদারি", value: "ফৌজদারি" },
+            { label: "পারিবারিক", value: "পারিবারিক" },
+            { label: "প্রশাসনিক", value: "প্রশাসনিক" },
+            { label: "শ্রম", value: "শ্রম" },
           ]}
         />
         <AppSelect
@@ -66,10 +67,10 @@ export function BasicInformationSection({
           placeholder="Select status"
           required
           options={[
-            { label: "New", value: "new" },
-            { label: "In Progress", value: "in-progress" },
-            { label: "Pending", value: "pending" },
-            { label: "Resolved", value: "resolved" },
+            { label: "নতুন", value: "নতুন" },
+            { label: "চলমান", value: "চলমান" },
+            { label: "নিষ্পত্তি", value: "নিষ্পত্তি" },
+            { label: "স্থগিত", value: "স্থগিত" },
           ]}
         />
         <AppDatePicker

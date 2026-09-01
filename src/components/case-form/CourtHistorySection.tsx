@@ -5,19 +5,19 @@ import { FormSection } from "./FormSection";
 import { SectionHeader } from "./SectionHeader";
 
 export function CourtHistorySection({
-  courts,
+  courtHistory,
   register,
   errors,
   addCourt,
   removeCourt,
 }: {
-  courts: Array<{
+  courtHistory: Array<{
     id: string;
     courtName: string;
     caseNumber: string;
     judgeName: string;
     transferDate: string;
-    currentCourt: boolean;
+    isCurrent: boolean;
   }>;
   register: any;
   errors: any;
@@ -36,7 +36,7 @@ export function CourtHistorySection({
         onAction={addCourt}
       />
       <div className="space-y-4">
-        {courts.map((court, index) => (
+        {courtHistory.map((court, index) => (
           <div
             key={court.id}
             className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4"
@@ -48,7 +48,7 @@ export function CourtHistorySection({
               <button
                 type="button"
                 onClick={() => removeCourt(court.id)}
-                disabled={courts.length === 1}
+                disabled={courtHistory.length === 1}
                 className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Trash2 className="h-4 w-4" />
@@ -58,32 +58,32 @@ export function CourtHistorySection({
             <div className="grid gap-4 md:grid-cols-2">
               <AppInput
                 label="Court Name"
-                name={`courts.${index}.courtName`}
+                name={`courtHistory.${index}.courtName`}
                 register={register}
-                error={errors?.courts?.[index]?.courtName}
+                error={errors?.courtHistory?.[index]?.courtName}
                 placeholder="Enter court name"
                 required
               />
               <AppInput
                 label="Case Number"
-                name={`courts.${index}.caseNumber`}
+                name={`courtHistory.${index}.caseNumber`}
                 register={register}
-                error={errors?.courts?.[index]?.caseNumber}
+                error={errors?.courtHistory?.[index]?.caseNumber}
                 placeholder="Case number"
                 required
               />
               <AppInput
                 label="Judge Name"
-                name={`courts.${index}.judgeName`}
+                name={`courtHistory.${index}.judgeName`}
                 register={register}
-                error={errors?.courts?.[index]?.judgeName}
+                error={errors?.courtHistory?.[index]?.judgeName}
                 placeholder="Judge name"
               />
               <AppDatePicker
                 label="Transfer Date"
-                name={`courts.${index}.transferDate`}
+                name={`courtHistory.${index}.transferDate`}
                 register={register}
-                error={errors?.courts?.[index]?.transferDate}
+                error={errors?.courtHistory?.[index]?.transferDate}
               />
             </div>
             <div className="mt-4 rounded-2xl border border-[#E5E7EB] bg-white p-3">
@@ -91,7 +91,7 @@ export function CourtHistorySection({
                 <input
                   type="checkbox"
                   className="h-4 w-4 rounded border-[#E5E7EB] text-[#D4A017] focus:ring-[#D4A017]"
-                  {...register(`courts.${index}.currentCourt`)}
+                  {...register(`courtHistory.${index}.isCurrent`)}
                 />
                 Current court
               </label>

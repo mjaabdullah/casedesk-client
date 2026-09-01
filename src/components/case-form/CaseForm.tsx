@@ -1,5 +1,6 @@
 "use client";
 
+import { addCase } from "@/lib/api/addCase";
 import { Chip } from "@heroui/react";
 import { ArrowRight, FileText, ShieldCheck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -28,7 +29,7 @@ type Court = {
   caseNumber: string;
   judgeName: string;
   transferDate: string;
-  currentCourt: boolean;
+  isCurrent: boolean;
 };
 
 type LegalSection = {
@@ -45,7 +46,7 @@ type RelatedCase = {
   notes: string;
 };
 
-type FormValues = {
+export type FormValues = {
   caseTitle: string;
   subject: string;
   caseType: string;
@@ -54,7 +55,7 @@ type FormValues = {
   filingDate: string;
   plaintiffs: Party[];
   defendants: Party[];
-  courts: Court[];
+  courtHistory: Court[];
   legalSections: LegalSection[];
   relatedCases: RelatedCase[];
 };
@@ -83,7 +84,7 @@ const initialCourt = (): Court => ({
   caseNumber: "",
   judgeName: "",
   transferDate: "",
-  currentCourt: false,
+  isCurrent: false,
 });
 
 const initialLegalSection = (): LegalSection => ({
@@ -109,7 +110,7 @@ const defaultValues: FormValues = {
   filingDate: "",
   plaintiffs: [initialParty("plaintiff", "1")],
   defendants: [initialParty("defendant", "1")],
-  courts: [initialCourt()],
+  courtHistory: [initialCourt()],
   legalSections: [],
   relatedCases: [],
 };
@@ -134,9 +135,9 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
       defendants: initialValues?.defendants?.length
         ? initialValues.defendants
         : defaultValues.defendants,
-      courts: initialValues?.courts?.length
-        ? initialValues.courts
-        : defaultValues.courts,
+      courtHistory: initialValues?.courtHistory?.length
+        ? initialValues.courtHistory
+        : defaultValues.courtHistory,
       legalSections: initialValues?.legalSections?.length
         ? initialValues.legalSections
         : [],
@@ -149,7 +150,7 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
   const watchedValues = watch();
   const plaintiffs = watchedValues.plaintiffs ?? [];
   const defendants = watchedValues.defendants ?? [];
-  const courts = watchedValues.courts ?? [];
+  const courtHistory = watchedValues.courtHistory ?? [];
   const legalSections = watchedValues.legalSections ?? [];
   const relatedCases = watchedValues.relatedCases ?? [];
 
@@ -192,14 +193,14 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
   };
 
   const addCourt = () => {
-    setValue("courts", [...courts, initialCourt()]);
+    setValue("courtHistory", [...courtHistory, initialCourt()]);
   };
 
   const removeCourt = (id: string) => {
-    if (courts.length === 1) return;
+    if (courtHistory.length === 1) return;
     setValue(
-      "courts",
-      courts.filter((court) => court.id !== id),
+      "courtHistory",
+      courtHistory.filter((court) => court.id !== id),
     );
   };
 
@@ -226,15 +227,20 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
     );
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setSubmitAttempted(true);
+
+    const result = await addCase(data);
+
+    console.log(result, "form submission result");
+
     console.log(data);
   };
 
   const reviewSummary = useMemo(() => {
     const plaintiffCount = plaintiffs.length;
     const defendantCount = defendants.length;
-    const courtCount = courts.length;
+    const courtCount = courtHistory.length;
     const legalCount = legalSections.length;
     const relatedCount = relatedCases.length;
 
@@ -248,7 +254,7 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
   }, [
     plaintiffs.length,
     defendants.length,
-    courts.length,
+    courtHistory.length,
     legalSections.length,
     relatedCases.length,
   ]);
@@ -293,7 +299,7 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
       />
 
       <CourtHistorySection
-        courts={courts}
+        courtHistory={courtHistory}
         register={register}
         errors={errors}
         addCourt={addCourt}

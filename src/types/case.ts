@@ -1,11 +1,3 @@
-/**
- * Types for the CaseDesk `/cases` listing page.
- *
- * IMPORTANT: The `/cases` page only ever receives the REDUCED Case shape
- * described below. Do not assume any other field from the full Case
- * document is available here.
- */
-
 export type CaseType =
   | "দেওয়ানি"
   | "ফৌজদারি"
@@ -29,6 +21,7 @@ export interface CaseCourtInfo {
 }
 
 /** The reduced Case object returned by the `/cases` listing endpoint. */
+
 export interface CaseListItem {
   _id: string;
   caseType: CaseType;
