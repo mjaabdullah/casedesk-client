@@ -3,26 +3,9 @@
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
 import { getSessionUserFromClient } from "@/lib/getSessionFromClient";
-import type { UserProfile, UserType } from "./profile";
+import { normalizeUserType, type UserProfile } from "./profile";
 
 const PROFILE_QUERY_KEY = ["profile", "me"] as const;
-
-function normalizeUserType(value: string | null | undefined): UserType {
-  const normalizedValue = value?.trim().toLowerCase();
-
-  if (normalizedValue === "lawyer") {
-    return "lawyer";
-  }
-
-  if (
-    normalizedValue === "assistant" ||
-    normalizedValue === "lawyerassistant"
-  ) {
-    return "assistant";
-  }
-
-  return "general";
-}
 
 function normalizeProfile(
   sessionUser: { [key: string]: unknown } | null,

@@ -13,6 +13,16 @@ export const addCase = async (caseData: FormValues) => {
       },
     );
     const data = await response.json();
+    if (!response.ok) {
+      const message =
+        typeof data === "object" &&
+        data !== null &&
+        "message" in data &&
+        typeof data.message === "string"
+          ? data.message
+          : `Failed to submit case (status ${response.status})`;
+      throw new Error(message);
+    }
     return data;
   } catch (error) {
     console.error("Error adding case:", error);

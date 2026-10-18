@@ -10,11 +10,11 @@ export function FormSection({
   children,
 }: FormSectionProps) {
   return (
-    <section className="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm">
+    <section className="rounded-3xl border border-border bg-card p-6 shadow-sm">
       <div className="mb-6 flex flex-col gap-1">
-        <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+        <h2 className="text-xl font-semibold text-foreground">{title}</h2>
         {description ? (
-          <p className="text-sm text-slate-600">{description}</p>
+          <p className="text-sm text-muted">{description}</p>
         ) : null}
       </div>
       <div className="space-y-5">{children}</div>

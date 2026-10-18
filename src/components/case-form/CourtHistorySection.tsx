@@ -39,17 +39,17 @@ export function CourtHistorySection({
         {courtHistory.map((court, index) => (
           <div
             key={court.id}
-            className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4"
+            className="rounded-2xl border border-border bg-background p-4"
           >
             <div className="mb-4 flex items-center justify-between">
-              <div className="text-sm font-semibold text-slate-800">
+              <div className="text-sm font-semibold text-foreground">
                 Court {index + 1}
               </div>
               <button
                 type="button"
                 onClick={() => removeCourt(court.id)}
                 disabled={courtHistory.length === 1}
-                className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-muted transition hover:border-danger hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Trash2 className="h-4 w-4" />
                 Remove
@@ -86,11 +86,11 @@ export function CourtHistorySection({
                 error={errors?.courtHistory?.[index]?.transferDate}
               />
             </div>
-            <div className="mt-4 rounded-2xl border border-[#E5E7EB] bg-white p-3">
-              <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
+            <div className="mt-4 rounded-2xl border border-border bg-card p-3">
+              <label className="flex items-center gap-3 text-sm font-medium text-foreground">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded border-[#E5E7EB] text-[#D4A017] focus:ring-[#D4A017]"
+                  className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
                   {...register(`courtHistory.${index}.isCurrent`)}
                 />
                 Current court

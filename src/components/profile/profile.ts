@@ -1,5 +1,22 @@
 export type UserType = "lawyer" | "assistant" | "general";
 
+export function normalizeUserType(value: string | null | undefined): UserType {
+  const normalizedValue = value?.trim().toLowerCase();
+
+  if (normalizedValue === "lawyer") {
+    return "lawyer";
+  }
+
+  if (
+    normalizedValue === "assistant" ||
+    normalizedValue === "lawyerassistant"
+  ) {
+    return "assistant";
+  }
+
+  return "general";
+}
+
 export type UserProfile = {
   id: string;
   name: string;

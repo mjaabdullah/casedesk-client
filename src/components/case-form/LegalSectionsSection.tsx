@@ -28,7 +28,7 @@ export function LegalSectionsSection({
         onAction={addLegalSection}
       />
       {legalSections.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E7EB] bg-[#F8F9FB] p-6 text-sm text-slate-600">
+        <div className="rounded-2xl border border-dashed border-border bg-background p-6 text-sm text-muted">
           No legal sections added yet. Use the button above to add one.
         </div>
       ) : (
@@ -36,16 +36,16 @@ export function LegalSectionsSection({
           {legalSections.map((section, index) => (
             <div
               key={section.id}
-              className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4"
+              className="rounded-2xl border border-border bg-background p-4"
             >
               <div className="mb-4 flex items-center justify-between">
-                <div className="text-sm font-semibold text-slate-800">
+                <div className="text-sm font-semibold text-foreground">
                   Section {index + 1}
                 </div>
                 <button
                   type="button"
                   onClick={() => removeLegalSection(section.id)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-muted transition hover:border-danger hover:text-danger"
                 >
                   <Trash2 className="h-4 w-4" />
                   Remove

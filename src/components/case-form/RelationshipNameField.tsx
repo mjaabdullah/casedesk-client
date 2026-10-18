@@ -37,9 +37,9 @@ export function RelationshipNameField({
 
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
-      <div className="flex flex-col gap-3 rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-3 md:flex-row md:items-end">
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-background p-3 md:flex-row md:items-end">
         <div className="min-w-[170px]">
-          <label className="mb-2 block text-sm font-medium text-slate-700">
+          <label className="mb-2 block text-sm font-medium text-foreground">
             Relation Type
           </label>
           <select
@@ -49,7 +49,7 @@ export function RelationshipNameField({
                 event.target.value === "Husband" ? "Husband" : "Father";
               onRelationshipTypeChange(nextValue);
             }}
-            className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-[#D4A017] focus:ring-2 focus:ring-[#D4A017]/20"
+            className="h-12 w-full rounded-xl border border-border bg-card px-3 text-sm text-foreground outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
             aria-label="Relationship type"
           >
             <option value="Father">Father</option>
@@ -60,14 +60,16 @@ export function RelationshipNameField({
         <div className="flex-1">
           <label
             htmlFor={name}
-            className="mb-2 block text-sm font-medium text-slate-700"
+            className="mb-2 block text-sm font-medium text-foreground"
           >
             {config.label}
           </label>
           <input
             aria-label={config.label}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? `${name}-error` : undefined}
             placeholder={config.placeholder}
-            className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-[#D4A017] focus:ring-2 focus:ring-[#D4A017]/20"
+            className="h-12 w-full rounded-xl border border-border bg-card px-4 text-sm text-foreground outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
             {...register(name)}
           />
           <input
@@ -77,7 +79,11 @@ export function RelationshipNameField({
           />
         </div>
       </div>
-      {error ? <p className="text-sm text-red-600">{error.message}</p> : null}
+      {error ? (
+        <p id={`${name}-error`} className="text-sm text-danger">
+          {error.message}
+        </p>
+      ) : null}
     </div>
   );
 }

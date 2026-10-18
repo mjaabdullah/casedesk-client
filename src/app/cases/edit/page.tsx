@@ -26,13 +26,13 @@ const mockCase: {
     address: string;
     phone: string;
   }>;
-  courts: Array<{
+  courtHistory: Array<{
     id: string;
     courtName: string;
     caseNumber: string;
     judgeName: string;
     transferDate: string;
-    currentCourt: boolean;
+    isCurrent: boolean;
   }>;
   legalSections: Array<{
     id: string;
@@ -49,9 +49,9 @@ const mockCase: {
 } = {
   caseTitle: "Commercial Dispute Resolution",
   subject: "Breach of contract",
-  caseType: "civil",
+  caseType: "দেওয়ানি",
   ourSide: "defendant",
-  status: "in-progress",
+  status: "চলমান",
   filingDate: "2025-01-14",
   plaintiffs: [
     {
@@ -93,14 +93,14 @@ const mockCase: {
       phone: "+92 300 4444444",
     },
   ],
-  courts: [
+  courtHistory: [
     {
       id: "court-1",
       courtName: "District Court Lahore",
       caseNumber: "1234/2025",
       judgeName: "Hon. A. Qureshi",
       transferDate: "2025-02-10",
-      currentCourt: true,
+      isCurrent: true,
     },
     {
       id: "court-2",
@@ -108,7 +108,7 @@ const mockCase: {
       caseNumber: "5678/2025",
       judgeName: "Hon. S. Malik",
       transferDate: "2025-03-01",
-      currentCourt: false,
+      isCurrent: false,
     },
   ],
   legalSections: [

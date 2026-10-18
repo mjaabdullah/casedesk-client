@@ -1,14 +1,12 @@
 "use client";
 
 import { addCase } from "@/lib/api/addCase";
-import { Chip } from "@heroui/react";
-import { ArrowRight, FileText, ShieldCheck } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { AppButton } from "../shared/AppButton";
+import { ArrowLeft, ArrowRight, Check, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm, type Path, type SubmitHandler } from "react-hook-form";
 import { BasicInformationSection } from "./BasicInformationSection";
+import { CaseSummary } from "./CaseSummary";
 import { CourtHistorySection } from "./CourtHistorySection";
-import { FormSection } from "./FormSection";
 import { LegalSectionsSection } from "./LegalSectionsSection";
 import { PartiesSection } from "./PartiesSection";
 import { RelatedCasesSection } from "./RelatedCasesSection";
@@ -65,6 +63,31 @@ type CaseFormProps = {
   initialValues?: Partial<FormValues>;
 };
 
+const steps = [
+  { title: "Case details", description: "Core information and status" },
+  { title: "Parties", description: "Plaintiffs and defendants" },
+  { title: "Court history", description: "Court and case numbers" },
+  {
+    title: "Other information",
+    description: "Legal sections and related cases",
+  },
+  { title: "Review", description: "Confirm all case information" },
+];
+
+const stepOfField: Record<string, number> = {
+  caseTitle: 0,
+  subject: 0,
+  caseType: 0,
+  ourSide: 0,
+  status: 0,
+  filingDate: 0,
+  plaintiffs: 1,
+  defendants: 1,
+  courtHistory: 2,
+  legalSections: 3,
+  relatedCases: 3,
+};
+
 const initialParty = (
   role: "plaintiff" | "defendant",
   number: string,
@@ -117,14 +140,19 @@ const defaultValues: FormValues = {
 
 export function CaseForm({ mode, initialValues }: CaseFormProps) {
   const [showRelatedCases, setShowRelatedCases] = useState(false);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitError, setSubmitError] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     watch,
+    trigger,
   } = useForm<FormValues>({
     defaultValues: {
       ...defaultValues,
@@ -145,6 +173,7 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
         ? initialValues.relatedCases
         : [],
     },
+    shouldUnregister: false,
   });
 
   const watchedValues = watch();
@@ -228,149 +257,281 @@ export function CaseForm({ mode, initialValues }: CaseFormProps) {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    setSubmitAttempted(true);
-
-    const result = await addCase(data);
-
-    console.log(result, "form submission result");
-
-    console.log(data);
+    setSubmitMessage("");
+    setSubmitError(false);
+    try {
+      await addCase(data);
+      setIsSubmitted(true);
+      setSubmitMessage(
+        mode === "add"
+          ? "The case was submitted successfully."
+          : "The case changes were submitted successfully.",
+      );
+    } catch (error) {
+      setSubmitError(true);
+      setSubmitMessage(
+        error instanceof Error
+          ? error.message
+          : "The case could not be submitted. Please try again.",
+      );
+    }
   };
 
-  const reviewSummary = useMemo(() => {
-    const plaintiffCount = plaintiffs.length;
-    const defendantCount = defendants.length;
-    const courtCount = courtHistory.length;
-    const legalCount = legalSections.length;
-    const relatedCount = relatedCases.length;
+  const goToNextStep = async () => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+    try {
+      const fields: Path<FormValues>[] = [];
+      if (currentStep === 0) {
+        fields.push("caseTitle", "caseType", "ourSide", "status", "filingDate");
+      } else if (currentStep === 1) {
+        plaintiffs.forEach((_, index) => {
+          fields.push(`plaintiffs.${index}.number`, `plaintiffs.${index}.name`);
+        });
+        defendants.forEach((_, index) => {
+          fields.push(`defendants.${index}.number`, `defendants.${index}.name`);
+        });
+      } else if (currentStep === 2) {
+        courtHistory.forEach((_, index) => {
+          fields.push(
+            `courtHistory.${index}.courtName`,
+            `courtHistory.${index}.caseNumber`,
+          );
+        });
+      } else if (currentStep === 3) {
+        legalSections.forEach((_, index) => {
+          fields.push(`legalSections.${index}.actName`);
+        });
+      }
+      if (!(await trigger(fields, { shouldFocus: true }))) return;
+      setSubmitMessage("");
+      setCurrentStep((step) => Math.min(step + 1, steps.length - 1));
+    } finally {
+      setIsNavigating(false);
+    }
+  };
 
-    return [
-      `${plaintiffCount} plaintiff${plaintiffCount === 1 ? "" : "s"}`,
-      `${defendantCount} defendant${defendantCount === 1 ? "" : "s"}`,
-      `${courtCount} court${courtCount === 1 ? "" : "s"}`,
-      `${legalCount} legal section${legalCount === 1 ? "" : "s"}`,
-      `${relatedCount} related case${relatedCount === 1 ? "" : "s"}`,
-    ];
-  }, [
-    plaintiffs.length,
-    defendants.length,
-    courtHistory.length,
-    legalSections.length,
-    relatedCases.length,
-  ]);
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (currentStep !== steps.length - 1) {
+      void goToNextStep();
+    }
+  };
+
+  const handleFinalSubmit = handleSubmit(
+    async (data) => {
+      await onSubmit(data);
+    },
+    (errs) => {
+      const errorSteps = Object.keys(errs)
+        .map((key) => stepOfField[key])
+        .filter((n): n is number => n !== undefined);
+      if (errorSteps.length) setCurrentStep(Math.min(...errorSteps));
+    },
+  );
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleFormSubmit}
+      noValidate
       className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-3 rounded-3xl border border-[#E5E7EB] bg-white p-8 shadow-sm">
+      <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-8 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#D4A017]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent">
               {mode === "add" ? "Create New Matter" : "Update Matter"}
             </p>
-            <h1 className="mt-2 text-3xl font-semibold text-slate-900">
+            <h1 className="mt-2 text-3xl font-semibold text-foreground">
               {mode === "add" ? "Create Case" : "Edit Case"}
             </h1>
           </div>
-          <div className="flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-[#F8F9FB] px-4 py-2 text-sm text-slate-600">
-            <ShieldCheck className="h-4 w-4 text-[#D4A017]" />
-            Secure draft workflow
+          <div className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm text-muted">
+            <ShieldCheck className="h-4 w-4 text-accent" />
+            Step {currentStep + 1} of {steps.length}
           </div>
         </div>
-        <p className="max-w-2xl text-sm text-slate-600">
-          Capture the essentials in a structured flow without overwhelming the
-          user.
+        <p className="max-w-2xl text-sm text-muted">
+          Complete the case information in manageable steps. Your entries are
+          retained as you move through the form.
         </p>
       </div>
 
-      <BasicInformationSection register={register} errors={errors} />
-
-      <PartiesSection
-        plaintiffs={plaintiffs}
-        defendants={defendants}
-        register={register}
-        errors={errors}
-        addParty={addParty}
-        removeParty={removeParty}
-        nextPartyNumber={nextPartyNumber}
-        setValue={setValue}
-      />
-
-      <CourtHistorySection
-        courtHistory={courtHistory}
-        register={register}
-        errors={errors}
-        addCourt={addCourt}
-        removeCourt={removeCourt}
-      />
-
-      <LegalSectionsSection
-        legalSections={legalSections}
-        register={register}
-        errors={errors}
-        addLegalSection={addLegalSection}
-        removeLegalSection={removeLegalSection}
-      />
-
-      <RelatedCasesSection
-        relatedCases={relatedCases}
-        register={register}
-        errors={errors}
-        showRelatedCases={showRelatedCases}
-        setShowRelatedCases={setShowRelatedCases}
-        addRelatedCase={addRelatedCase}
-        removeRelatedCase={removeRelatedCase}
-      />
-
-      <FormSection
-        title="Review"
-        description="Confirm the information before submission."
+      <nav
+        aria-label="Case form progress"
+        className="rounded-2xl border border-border bg-card p-5"
       >
-        <div className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-5">
-          <div className="flex flex-wrap gap-2">
-            {reviewSummary.map((item) => (
-              <Chip key={item} size="sm" className="bg-white text-slate-700">
-                {item}
-              </Chip>
-            ))}
-          </div>
-          <div className="mt-4 rounded-2xl border border-dashed border-[#E5E7EB] bg-white p-4 text-sm text-slate-600">
-            <div className="flex items-center gap-2 font-medium text-slate-800">
-              <FileText className="h-4 w-4 text-[#D4A017]" />
-              {mode === "edit"
-                ? "Draft review for saved matter"
-                : "Draft review for new matter"}
-            </div>
-            <p className="mt-2">
-              No backend submission has been implemented. Submitting will only
-              log the form data in the browser console.
-            </p>
-          </div>
+        <ol className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+          {steps.map((step, index) => {
+            const isCurrent = index === currentStep;
+            const isComplete = index < currentStep;
+            return (
+              <li
+                key={step.title}
+                aria-current={isCurrent ? "step" : undefined}
+                className="flex items-start gap-3"
+              >
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold ${
+                    isCurrent
+                      ? "border-accent bg-accent text-accent-foreground"
+                      : isComplete
+                        ? "border-success bg-success text-success-foreground"
+                        : "border-border bg-background text-muted"
+                  }`}
+                >
+                  {isComplete ? (
+                    <Check aria-hidden="true" className="h-4 w-4" />
+                  ) : (
+                    index + 1
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span
+                    className={`block text-sm font-medium ${isCurrent ? "text-foreground" : "text-muted"}`}
+                  >
+                    {step.title}
+                  </span>
+                  <span className="hidden text-xs text-muted sm:block">
+                    {step.description}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+        <div
+          className="mt-5 h-1.5 overflow-hidden rounded-full bg-background"
+          role="progressbar"
+          aria-label="Form completion"
+          aria-valuemin={1}
+          aria-valuemax={steps.length}
+          aria-valuenow={currentStep + 1}
+        >
+          <div
+            className="h-full rounded-full bg-accent transition-[width]"
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+          />
         </div>
-      </FormSection>
+      </nav>
 
-      <div className="flex flex-col gap-3 rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-900">
-            Ready to save?
-          </h2>
-          <p className="text-sm text-slate-600">
-            The form is intentionally client-side and lightweight.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <AppButton type="button" variant="ghost" className="w-auto">
-            Cancel
-          </AppButton>
-          <AppButton type="submit" variant="primary" className="w-auto">
-            <span className="flex items-center gap-2">
-              {mode === "add" ? "Create Case" : "Save Changes"}
-              <ArrowRight className="h-4 w-4" />
-            </span>
-          </AppButton>
-        </div>
+      <p className="sr-only" aria-live="polite">
+        Step {currentStep + 1} of {steps.length}: {steps[currentStep].title}
+      </p>
+      <div>
+        {currentStep === 0 ? (
+          <BasicInformationSection register={register} errors={errors} />
+        ) : null}
+        {currentStep === 1 ? (
+          <PartiesSection
+            plaintiffs={plaintiffs}
+            defendants={defendants}
+            register={register}
+            errors={errors}
+            addParty={addParty}
+            removeParty={removeParty}
+            nextPartyNumber={nextPartyNumber}
+            setValue={setValue}
+          />
+        ) : null}
+        {currentStep === 2 ? (
+          <CourtHistorySection
+            courtHistory={courtHistory}
+            register={register}
+            errors={errors}
+            addCourt={addCourt}
+            removeCourt={removeCourt}
+          />
+        ) : null}
+        {currentStep === 3 ? (
+          <div className="space-y-6">
+            <LegalSectionsSection
+              legalSections={legalSections}
+              register={register}
+              errors={errors}
+              addLegalSection={addLegalSection}
+              removeLegalSection={removeLegalSection}
+            />
+            <RelatedCasesSection
+              relatedCases={relatedCases}
+              register={register}
+              errors={errors}
+              showRelatedCases={showRelatedCases}
+              setShowRelatedCases={setShowRelatedCases}
+              addRelatedCase={addRelatedCase}
+              removeRelatedCase={removeRelatedCase}
+            />
+          </div>
+        ) : null}
+        {currentStep === 4 ? (
+          <section className="space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold text-foreground">
+                Review case information
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                Check all entered details below. Use “Edit section” to make
+                changes before submitting.
+              </p>
+            </div>
+            <CaseSummary
+              values={watchedValues}
+              onEditSection={setCurrentStep}
+            />
+          </section>
+        ) : null}
+      </div>
+
+      {submitMessage ? (
+        <p
+          role={submitError ? "alert" : "status"}
+          className={`rounded-xl border border-border bg-card p-4 text-sm ${
+            submitError ? "text-danger" : "text-success"
+          }`}
+        >
+          {submitMessage}
+        </p>
+      ) : null}
+
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
+        <button
+          type="button"
+          onClick={() => setCurrentStep((step) => Math.max(0, step - 1))}
+          disabled={currentStep === 0 || isSubmitting}
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-background disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+          Previous
+        </button>
+        {currentStep < steps.length - 1 ? (
+          <button
+            key="next-btn"
+            type="button"
+            onClick={() => void goToNextStep()}
+            disabled={isNavigating}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-wait disabled:opacity-60"
+          >
+            Next
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </button>
+        ) : (
+          <button
+            key="submit-btn"
+            type="button"
+            onClick={() => void handleFinalSubmit()}
+            disabled={isSubmitting || (mode === "add" && isSubmitted)}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-wait disabled:opacity-60"
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : mode === "add"
+                ? "Create Case"
+                : "Save Changes"}
+            {!isSubmitting ? (
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            ) : null}
+          </button>
+        )}
       </div>
     </form>
   );

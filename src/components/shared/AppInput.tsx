@@ -27,7 +27,7 @@ export function AppInput({
 }: AppInputProps) {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
-      <label htmlFor={name} className="text-sm font-medium text-slate-700">
+      <label htmlFor={name} className="text-sm font-medium text-foreground">
         {label}
       </label>
       <input
@@ -36,15 +36,21 @@ export function AppInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         required={required}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${name}-error` : undefined}
         {...register(name, {
           required: required ? "This field is required." : false,
         })}
-        className={`h-12 rounded-xl border bg-white px-4 text-sm text-slate-700 outline-none transition focus:ring-2 focus:ring-[#D4A017]/20 ${error ? "border-red-400" : "border-[#E5E7EB] focus:border-[#D4A017]"}`}
+        className={`h-12 rounded-xl border border-border bg-card px-4 text-sm text-foreground outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20 ${error ? "border-danger" : ""}`}
       />
       {description ? (
-        <p className="text-xs text-slate-500">{description}</p>
+        <p className="text-xs text-muted">{description}</p>
       ) : null}
-      {error ? <p className="text-sm text-red-600">{error.message}</p> : null}
+      {error ? (
+        <p id={`${name}-error`} className="text-sm text-danger">
+          {error.message}
+        </p>
+      ) : null}
     </div>
   );
 }

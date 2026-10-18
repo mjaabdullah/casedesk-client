@@ -49,7 +49,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
           {user?.image ? (
             <Avatar.Image src={user.image} alt={displayName} />
           ) : null}
-          <Avatar.Fallback className="bg-[#23272F] font-medium text-white">
+          <Avatar.Fallback className="bg-foreground font-medium text-background">
             {getInitials(displayName)}
           </Avatar.Fallback>
         </Avatar>
@@ -57,7 +57,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 
       <Dropdown.Popover
         placement="bottom end"
-        className="min-w-[220px] rounded-lg border border-[#E5E7EB] bg-white p-1.5 shadow-lg shadow-black/5"
+        className="min-w-[220px] rounded-lg border border-border bg-card p-1.5 shadow-lg shadow-black/5"
       >
         <Dropdown.Menu
           aria-label="Account"
@@ -75,10 +75,10 @@ export function UserDropdown({ user }: UserDropdownProps) {
                 id={item.href}
                 href={item.href}
                 textValue={item.label}
-                className="flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm text-[#23272F] outline-none transition-colors duration-150 data-[hovered=true]:bg-[#F8F9FB] data-[focus-visible=true]:bg-[#F8F9FB]"
+                className="flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm text-foreground outline-none transition-colors duration-150 data-[hovered=true]:bg-foreground/5 data-[focus-visible=true]:bg-foreground/5"
               >
                 <Icon
-                  className="h-4 w-4 text-[#23272F]/60"
+                  className="h-4 w-4 text-muted"
                   aria-hidden="true"
                 />
                 <Label>{item.label}</Label>
@@ -86,7 +86,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
             );
           })}
 
-          <Separator className="my-1 bg-[#E5E7EB]" />
+          <Separator className="my-1 bg-border" />
 
           <Dropdown.Item
             id="logout"

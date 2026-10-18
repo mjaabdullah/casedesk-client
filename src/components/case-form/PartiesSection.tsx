@@ -45,7 +45,7 @@ export function PartiesSection({
       description="Add the relevant plaintiffs and defendants as separate repeatable cards."
     >
       <div className="space-y-6">
-        <div className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4">
+        <div className="rounded-2xl border border-border bg-background p-4">
           <SectionHeader
             title="Plaintiffs"
             description="Each plaintiff keeps its own legal number and details."
@@ -56,18 +56,18 @@ export function PartiesSection({
             {plaintiffs.map((person, index) => (
               <div
                 key={person.id}
-                className="rounded-2xl border border-[#E5E7EB] bg-white p-4"
+                className="rounded-2xl border border-border bg-card p-4"
               >
                 <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                    <UserRound className="h-4 w-4 text-[#D4A017]" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <UserRound className="h-4 w-4 text-accent" />
                     Plaintiff {index + 1}
                   </div>
                   <button
                     type="button"
                     onClick={() => removeParty("plaintiff", person.id)}
                     disabled={plaintiffs.length === 1}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-muted transition hover:border-danger hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Trash2 className="h-4 w-4" />
                     Remove
@@ -122,7 +122,7 @@ export function PartiesSection({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4">
+        <div className="rounded-2xl border border-border bg-background p-4">
           <SectionHeader
             title="Defendants"
             description="Each defendant also keeps its own legal number."
@@ -133,18 +133,18 @@ export function PartiesSection({
             {defendants.map((person, index) => (
               <div
                 key={person.id}
-                className="rounded-2xl border border-[#E5E7EB] bg-white p-4"
+                className="rounded-2xl border border-border bg-card p-4"
               >
                 <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                    <UserRound className="h-4 w-4 text-[#D4A017]" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <UserRound className="h-4 w-4 text-accent" />
                     Defendant {index + 1}
                   </div>
                   <button
                     type="button"
                     onClick={() => removeParty("defendant", person.id)}
                     disabled={defendants.length === 1}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-muted transition hover:border-danger hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Trash2 className="h-4 w-4" />
                     Remove

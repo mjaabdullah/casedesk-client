@@ -34,14 +34,14 @@ export function RelatedCasesSection({
       description="Link related appeals or references only when relevant."
     >
       {!showRelatedCases ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E7EB] bg-[#F8F9FB] p-6 text-center">
-          <p className="text-sm text-slate-600">
+        <div className="rounded-2xl border border-dashed border-border bg-background p-6 text-center">
+          <p className="text-sm text-muted">
             No related cases have been added yet.
           </p>
           <button
             type="button"
             onClick={() => setShowRelatedCases(true)}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-[#D4A017] hover:text-[#D4A017]"
+            className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:border-accent hover:text-accent"
           >
             Add Related Case
           </button>
@@ -57,16 +57,16 @@ export function RelatedCasesSection({
           {relatedCases.map((relation, index) => (
             <div
               key={relation.id}
-              className="rounded-2xl border border-[#E5E7EB] bg-[#F8F9FB] p-4"
+              className="rounded-2xl border border-border bg-background p-4"
             >
               <div className="mb-4 flex items-center justify-between">
-                <div className="text-sm font-semibold text-slate-800">
+                <div className="text-sm font-semibold text-foreground">
                   Related Case {index + 1}
                 </div>
                 <button
                   type="button"
                   onClick={() => removeRelatedCase(relation.id)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-red-300 hover:text-red-600"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-muted transition hover:border-danger hover:text-danger"
                 >
                   <Trash2 className="h-4 w-4" />
                   Remove
